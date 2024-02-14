@@ -2,7 +2,7 @@ version: '3'
 
 services:
   envcontainer:
-    image: dev-environment:latest
+    image: aguiar575/dev-environment:latest
     container_name: envcontainer
     volumes: 
       - ~/Development/:/root/Development

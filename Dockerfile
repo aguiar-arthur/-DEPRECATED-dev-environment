@@ -4,7 +4,7 @@ FROM --platform=linux/x86_64 ubuntu:latest
 RUN apt-get update && \
     apt-get install -y \
     git tar luajit curl wget unzip make \
-    clang clang-tools jq \
+    clang clang-tools jq cron ripgrep \
     lsb-release software-properties-common gnupg 
 
 # Install Lazygit
@@ -18,8 +18,20 @@ RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygi
 RUN lazygit --version
 
 # Install ClamAV
-RUN apt-get install -y clamav clamav-daemon
+RUN apt-get install -y clamav clamav-daemon && \
+    freshclam
+
 COPY files/clamd.conf /etc/clamd.conf
+COPY files/clamscan.sh /path/to/clamscan.sh
+
+RUN chmod +x /path/to/clamscan.sh && \
+    echo "0 */5 * * * /path/to/clamscan.sh" | crontab -
+
+CMD cron && tail -f /var/log/cron.log
+
+# Install rust 
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    echo 'export PATH="/root/.cargo/bin:${PATH}"' >> /root/.bashrc
 
 # Clangd
 RUN apt-get install -y clangd-12 && \
