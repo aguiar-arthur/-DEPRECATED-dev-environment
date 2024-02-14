@@ -3,7 +3,7 @@ name: Docker Publish
 on:
   push:
     paths-ignore:
-      - 'dev-environment/README.md'
+      - 'README.md'
     branches:
       - main
       
