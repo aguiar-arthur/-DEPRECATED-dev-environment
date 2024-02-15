@@ -95,6 +95,27 @@ RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' && \
     nvim --headless -c ':TSUpdate' -c ':TSUpdateSync' -c 'q'
 
+# Manual installation of the packages
+RUN nvim --headless -c ':MasonInstall sqlls' -c 'q' && \
+    nvim --headless -c ':MasonInstall sqlfluff' -c 'q' && \
+    nvim --headless -c ':MasonInstall sql-formatter' -c 'q' && \
+    nvim --headless -c ':MasonInstall html-lsp html' -c 'q' && \
+    nvim --headless -c ':MasonInstall flake8' -c 'q' && \
+    nvim --headless -c ':MasonInstall python-lsp-server pylsp' -c 'q' && \
+    nvim --headless -c ':MasonInstall black' -c 'q' && \
+    nvim --headless -c ':MasonInstall cpplint' -c 'q' && \
+    nvim --headless -c ':MasonInstall clangd' -c 'q' && \
+    nvim --headless -c ':MasonInstall clang-format' -c 'q' && \
+    nvim --headless -c ':MasonInstall yaml-language-server yamlls' -c 'q' && \
+    nvim --headless -c ':MasonInstall typescript-language-server tsserver' -c 'q' && \
+    nvim --headless -c ':MasonInstall prettier' -c 'q' && \
+    nvim --headless -c ':MasonInstall eslint-lsp eslint' -c 'q' && \
+    nvim --headless -c ':MasonInstall dockerfile-language-server dockerls' -c 'q' && \
+    nvim --headless -c ':MasonInstall lua-language-server lua_ls' -c 'q' && \
+    nvim --headless -c ':MasonInstall omnisharp' -c 'q' && \
+    nvim --headless -c ':MasonInstall rust-analyzer ' -c 'q' && \
+    nvim --headless -c ':MasonUpdate' -c 'q'
+
 RUN eval "$(pyenv init --path)" && \
     mkdir /root/virtualenvs && \
     cd /root/virtualenvs && \
