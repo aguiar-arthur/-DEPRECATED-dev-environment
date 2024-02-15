@@ -1,4 +1,4 @@
-FROM --platform=linux/x86_64 ubuntu:latest
+FROM --platform=linux/amd64 ubuntu:latest
 
 # Update and install necessary packages
 RUN apt-get update && \
@@ -25,9 +25,8 @@ COPY files/clamd.conf /etc/clamd.conf
 COPY files/clamscan.sh /path/to/clamscan.sh
 
 RUN chmod +x /path/to/clamscan.sh && \
-    echo "0 */5 * * * /path/to/clamscan.sh" | crontab -
-
-CMD cron && tail -f /var/log/cron.log
+    echo "0 */5 * * * /path/to/clamscan.sh" | crontab - && \
+    cron
 
 # Install rust 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
@@ -93,28 +92,15 @@ RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share
     git clone https://github.com/Aguiar575/nvim /root/.config/nvim && \
     echo 'export PATH="/opt/nvim-linux64/bin:${PATH}"' >> /root/.bashrc && \
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' && \
-    nvim --headless -c ':TSUpdate' -c ':TSUpdateSync' -c 'q'
-
-# Manual installation of the packages
-RUN nvim --headless -c ':MasonInstall sqlls' -c 'q' && \
-    nvim --headless -c ':MasonInstall sqlfluff' -c 'q' && \
-    nvim --headless -c ':MasonInstall sql-formatter' -c 'q' && \
-    nvim --headless -c ':MasonInstall html-lsp html' -c 'q' && \
-    nvim --headless -c ':MasonInstall flake8' -c 'q' && \
-    nvim --headless -c ':MasonInstall python-lsp-server pylsp' -c 'q' && \
-    nvim --headless -c ':MasonInstall black' -c 'q' && \
-    nvim --headless -c ':MasonInstall cpplint' -c 'q' && \
-    nvim --headless -c ':MasonInstall clangd' -c 'q' && \
-    nvim --headless -c ':MasonInstall clang-format' -c 'q' && \
-    nvim --headless -c ':MasonInstall yaml-language-server yamlls' -c 'q' && \
-    nvim --headless -c ':MasonInstall typescript-language-server tsserver' -c 'q' && \
-    nvim --headless -c ':MasonInstall prettier' -c 'q' && \
-    nvim --headless -c ':MasonInstall eslint-lsp eslint' -c 'q' && \
-    nvim --headless -c ':MasonInstall dockerfile-language-server dockerls' -c 'q' && \
-    nvim --headless -c ':MasonInstall lua-language-server lua_ls' -c 'q' && \
-    nvim --headless -c ':MasonInstall omnisharp' -c 'q' && \
-    nvim --headless -c ':MasonInstall rust-analyzer ' -c 'q' && \
+    nvim --headless -c ':TSUpdate' -c ':TSUpdateSync' -c 'q' && \
     nvim --headless -c ':MasonUpdate' -c 'q'
+
+# Manual installation of the Mason plugins
+COPY ./files/plugins.sh /root/plugins.sh
+RUN chmod +x /root/plugins.sh && \
+    /root/plugins.sh
+
+RUN rm /root/plugins.sh
 
 RUN eval "$(pyenv init --path)" && \
     mkdir /root/virtualenvs && \
