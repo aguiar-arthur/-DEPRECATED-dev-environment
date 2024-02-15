@@ -96,11 +96,9 @@ RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share
     nvim --headless -c ':MasonUpdate' -c 'q'
 
 # Manual installation of the Mason plugins
-COPY ./files/plugins.sh /root/plugins.sh
+COPY files/plugins.sh /root/plugins.sh
 RUN chmod +x /root/plugins.sh && \
     /root/plugins.sh
-
-RUN rm /root/plugins.sh
 
 RUN eval "$(pyenv init --path)" && \
     mkdir /root/virtualenvs && \
