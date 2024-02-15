@@ -4,7 +4,7 @@ FROM --platform=linux/amd64 ubuntu:latest
 RUN apt-get update && \
     apt-get install -y \
     git tar luajit curl wget unzip make \
-    clang clang-tools jq cron ripgrep \
+    clang clang-tools jq cron ripgrep python3.10-venv \
     lsb-release software-properties-common gnupg 
 
 # Install Lazygit
@@ -51,8 +51,8 @@ RUN git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR" \
     && nvm use node
 
 RUN echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc \
-    && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm' >> ~/.bashrc \
-    && echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> ~/.bashrc
+    && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc \
+    && echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> ~/.bashrc
 
 # Install .NET
 RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh && \
