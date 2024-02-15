@@ -6,6 +6,11 @@ services:
     container_name: envcontainer
     volumes: 
       - ~/Development/:/root/Development
+    ports:
+      - "8081:4000"
+      - "8082:5000"
+      - "8084:6000"
+      - "8085:7000"
     networks:
       - envnetwork
     restart: unless-stopped

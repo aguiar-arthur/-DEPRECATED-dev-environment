@@ -5,7 +5,8 @@ RUN apt-get update && \
     apt-get install -y \
     git tar luajit curl wget unzip make \
     clang clang-tools jq cron ripgrep python3.10-venv \
-    lsb-release software-properties-common gnupg 
+    lsb-release software-properties-common gnupg \
+    nodejs npm
 
 # Install Lazygit
 RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') \
@@ -16,17 +17,6 @@ RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygi
     && rm -rf lazygit.tar.gz
 
 RUN lazygit --version
-
-# Install ClamAV
-RUN apt-get install -y clamav clamav-daemon && \
-    freshclam
-
-COPY files/clamd.conf /etc/clamd.conf
-COPY files/clamscan.sh /path/to/clamscan.sh
-
-RUN chmod +x /path/to/clamscan.sh && \
-    echo "0 */5 * * * /path/to/clamscan.sh" | crontab - && \
-    cron
 
 # Install rust 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
@@ -98,7 +88,7 @@ RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share
 # Manual installation of the Mason plugins
 COPY files/plugins.sh /root/plugins.sh
 RUN chmod +x /root/plugins.sh && \
-    /root/plugins.sh
+    ./root/plugins.sh
 
 RUN eval "$(pyenv init --path)" && \
     mkdir /root/virtualenvs && \
@@ -107,6 +97,11 @@ RUN eval "$(pyenv init --path)" && \
     ./debugpy/bin/python -m pip install debugpy
 
 COPY files/variables.lua /root/.config/nvim/lua/arthur/variables.lua
+
+# Cleanup
+RUN apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Start a command that doesn't exit immediately
 CMD ["tail", "-f", "/dev/null"]
