@@ -99,7 +99,9 @@ RUN eval "$(pyenv init --path)" && \
 COPY files/variables.lua /root/.config/nvim/lua/arthur/variables.lua
 
 # Cleanup
-RUN apt-get autoremove -y && \
+RUN npm update -g && \ 
+    apt-get upgrade -y && \ 
+    apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
