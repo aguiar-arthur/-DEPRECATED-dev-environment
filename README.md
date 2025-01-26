@@ -1,6 +1,6 @@
 # dev-environment
 [![Docker Publish](https://github.com/Aguiar575/dev-environment/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/Aguiar575/dev-environment/actions/workflows/docker-publish.yml)
-![No Maintenance Intended](https://img.shields.io/maintenance/no/2019.svg)
+![No Maintenance Intended](https://img.shields.io/maintenance/no/2025.svg)
 
 This Docker image, based on Ubuntu, incorporates various development tools and utilities to enhance your development environment. The image is complemented by a Docker Compose file that includes cAdvisor, a container monitoring tool. The development tools encompass Git, LuaJIT, Rust, Clang, Lazygit, NVM, .NET, Pyenv, Neovim, and more.
 
