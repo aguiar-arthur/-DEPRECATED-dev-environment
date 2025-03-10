@@ -1,4 +1,4 @@
-# dev-environment
+# DEPRECATED dev-environment
 [![Docker Publish](https://github.com/Aguiar575/dev-environment/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/Aguiar575/dev-environment/actions/workflows/docker-publish.yml)
 ![No Maintenance Intended](https://img.shields.io/maintenance/no/2025.svg)
 
